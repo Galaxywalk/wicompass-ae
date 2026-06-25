@@ -1,0 +1,248 @@
+% LaTeX template for Artifact Evaluation V20240722, adapted for WiCompass.
+% Original template: https://github.com/ctuning/artifact-evaluation/blob/master/docs/template/ae.tex
+\documentclass{sigplanconf}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\begin{document}
+\special{papersize=8.5in,11in}
+
+\appendix
+\section{Artifact Appendix}
+
+\subsection{Abstract}
+This artifact supports the evaluation of the MobiCom 2026 paper
+``WiCompass: Oracle-driven Data Scaling for mmWave Human Pose Estimation.''
+The artifact contains the WiCompass implementation, pre-trained VQ-VAE and
+human pose estimation model weights, processed datasets, cached intermediate
+results, notebooks for regenerating the paper figures, and scripts for optional
+end-to-end re-execution.  The fastest review path uses the supplied model zoo
+and experiment logs to regenerate the reported figures.  A deeper review path
+can re-run model evaluation, token encoding, KNN coverage, token-space sampling,
+pose decoding, simulation-scaling training, real-world training, and pilot-study
+training, subject to GPU time availability.
+
+\subsection{Artifact check-list (meta-information)}
+{\small
+\begin{itemize}[leftmargin=*]
+\item {\bf Algorithm:} VQ-VAE pose tokenization; KNN latent-space coverage; prioritized pose sampling (PPS); mmWave human pose estimation with Point Transformer.
+\item {\bf Program:} Python package \texttt{wicompass}; experiment scripts and Jupyter notebooks under \texttt{experiments/}; pose-estimation package under \texttt{src/pose\_estimation/}.
+\item {\bf Compilation:} Python package installation plus optional PointNet++ CUDA extension compilation.
+\item {\bf Transformations:} Human-pose preprocessing; token encoding; KNN index construction; token sampling; token-to-pose decoding; RF simulation traces supplied as datasets.
+\item {\bf Binary:} No required binary-only executable.  CUDA extensions are built locally for PointNet++.
+\item {\bf Model:} VQ-VAE pose encoder/decoder; Point Transformer based mmWave pose estimation models; released checkpoints in \texttt{model\_zoo/} and \texttt{logs/}.
+\item {\bf Data set:} Processed AMASS, MMFi, mmBody, WiCompass real-world data, RF-Genesis simulation datasets, encoded tokens, KNN coverage results, sampled tokens and poses.
+\item {\bf Run-time environment:} Linux; Python 3.11; PyTorch 2.x; CUDA 12.x; rclone for Google Drive download; Jupyter for figure notebooks.
+\item {\bf Hardware:} NVIDIA CUDA GPU recommended.  At least 16 GB RAM is required; 32 GB RAM is recommended.  Multi-GPU execution is supported for the largest KNN jobs.
+\item {\bf Run-time state:} Pre-trained weights and cached logs are provided for short review runs.  Full retraining starts from the supplied datasets.
+\item {\bf Execution:} Command-line Python scripts and Jupyter notebooks.
+\item {\bf Metrics:} VQ-VAE reconstruction and token metrics; KNN coverage; MPJPE and pose-estimation accuracy metrics; training curves and data-scaling trends.
+\item {\bf Output:} Recreated paper figures, JSON result summaries, HDF5 token files, KNN coverage directories, model checkpoints, and notebook outputs.
+\item {\bf Experiments:} VQ-VAE microbenchmarks; data coverage; simulator-based data scaling; real-world validation; pilot studies on model size, leave-one-out generalization, and data efficiency.
+\item {\bf How much disk space required (approximately)?:} Minimal figure-reproduction path: about 36 GB.  Full workspace: about 83 GB extracted, plus archive/download overhead.
+\item {\bf How much time is needed to prepare workflow (approximately)?:} 1--3 hours, dominated by downloading the workspace and compiling CUDA extensions.
+\item {\bf How much time is needed to complete experiments (approximately)?:} Figure reproduction from cached logs: minutes to tens of minutes.  Recomputing all KNN coverage needs about 12 GPU-hours.  Full pilot-study retraining needs about 400 GPU-hours on an RTX 3090 class GPU.
+\item {\bf Publicly available?:} TODO: add final review URL or public repository URL.
+\item {\bf Code licenses (if publicly available)?:} MIT license for the WiCompass repository; third-party submodules retain their own licenses.
+\item {\bf Data licenses (if publicly available)?:} TODO: confirm redistribution terms for processed AMASS, MMFi, mmBody, real-world data, and generated simulation data.
+\item {\bf Workflow automation framework used?:} Python scripts, shell commands, rclone, Jupyter notebooks, and TensorBoard logs; no external workflow engine is required.
+\item {\bf Archived (provide DOI)?:} TODO: add Zenodo/ACM DL/other archival DOI if requesting Artifacts Available.
+\end{itemize}
+}
+
+\subsection{Description}
+
+\subsubsection{How to access}
+TODO: provide the final artifact package link for reviewers.  The working code
+repository is expected to contain the WiCompass source tree with the following
+main components:
+\begin{itemize}[leftmargin=*]
+\item \texttt{src/wicompass/}: VQ-VAE, latent-space coverage, sampling, evaluation, and visualization code.
+\item \texttt{src/pose\_estimation/}: mmWave pose-estimation datasets, model, training, and evaluation code.
+\item \texttt{experiments/}: scripts and notebooks that regenerate the paper figures and optional training results.
+\item \texttt{tools/}: workspace download, extraction, visualization, and setup utilities.
+\end{itemize}
+
+The data, logs, and model weights are distributed as a WiCompass workspace.  The
+workspace can be downloaded using rclone from the shared Google Drive folder:
+\begin{center}
+\url{https://drive.google.com/drive/folders/1GDgcJ-6fq4TW-AmuZPPa-i_UvshAEg79?usp=sharing}
+\end{center}
+The command \texttt{python tools/download\_workspace.py --minimal} downloads the
+minimal artifact components for reproducing figures from cached logs.  The
+command \texttt{python tools/download\_workspace.py} downloads all components.
+After extraction, \texttt{python tools/setup\_workspace.py --workspace <path>}
+creates repository-local symbolic links.
+
+\subsubsection{Hardware dependencies}
+A CUDA-capable NVIDIA GPU is recommended for model evaluation, KNN coverage, and
+training.  The authors tested the code path with CUDA 12.x and PyTorch 2.x.  The
+largest experiments benefit from multiple GPUs; however, the cached-log path for
+figure regeneration can be inspected on a smaller GPU machine or CPU-only
+machine when notebooks only parse existing JSON/HDF5 results.
+
+\subsubsection{Software dependencies}
+The artifact assumes Linux, Conda, Python 3.11, CUDA 12.x, PyTorch 2.x, and
+rclone.  Core Python dependencies include \texttt{torch}, \texttt{torchvision},
+\texttt{numpy}, \texttt{scipy}, \texttt{faiss-gpu-cu12}, \texttt{h5py},
+\texttt{pandas}, \texttt{PyYAML}, \texttt{scikit-learn}, \texttt{matplotlib},
+\texttt{seaborn}, \texttt{tensorboard}, \texttt{einops}, \texttt{ray},
+\texttt{loguru}, \texttt{omegaconf}, \texttt{smplx}, \texttt{transforms3d},
+\texttt{human\_body\_prior}, and \texttt{chumpy}.  The \texttt{chumpy} package
+should be installed before \texttt{human\_body\_prior}.  PointNet++ CUDA
+extensions are built from the repository submodule.
+
+\subsubsection{Data sets}
+The workspace contains the following extracted components:
+\begin{itemize}[leftmargin=*]
+\item \texttt{model\_zoo}: pre-trained model weights, about 1.6 GB.
+\item \texttt{wicompass\_logs}: training logs, encoded tokens, KNN results, and cached figure inputs, about 34 GB.
+\item \texttt{AMASS\_preproc}: processed AMASS pose data, about 3.2 GB.
+\item \texttt{mmfi}: MMFi dataset subset used by the artifact, about 1.6 GB.
+\item \texttt{mmbody}: mmBody dataset subset used by the artifact, about 34 GB.
+\item \texttt{real\_world}: WiCompass real-world collected data, about 431 MB.
+\item \texttt{simulation\_datasets}: RF-Genesis generated mmWave simulation datasets, about 8.2 GB.
+\end{itemize}
+
+\subsubsection{Models}
+The main supplied model artifacts are the VQ-VAE checkpoint used for pose
+encoding and decoding, pose-estimation checkpoints used in the simulator and
+real-world evaluations, and pilot-study checkpoints used for model-size,
+leave-one-out, and data-efficiency comparisons.  The VQ-VAE checkpoint used in
+coverage analysis is stored at
+\texttt{logs/vqvae/vqvae\_tokennum16\_tokenclass64/best\_model.pth}.
+
+\subsection{Installation}
+Create and activate the Conda environment:
+\begin{verbatim}
+conda create -n wicompass python=3.11 -y
+conda activate wicompass
+\end{verbatim}
+Install Python dependencies and the WiCompass package:
+\begin{verbatim}
+pip install --no-build-isolation chumpy
+pip install -r requirements.txt
+pip install -e .
+\end{verbatim}
+Build the PointNet++ CUDA extension:
+\begin{verbatim}
+git submodule update --init --recursive
+cd submodules/Pointnet2_PyTorch/pointnet2_ops_lib
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
+pip install -e . --no-build-isolation
+\end{verbatim}
+Download and link the workspace:
+\begin{verbatim}
+python tools/download_workspace.py --workspace ~/wicompass_workspace --minimal
+python tools/setup_workspace.py --workspace ~/wicompass_workspace
+\end{verbatim}
+For full retraining or full pipeline inspection, omit \texttt{--minimal} to
+retrieve all dataset components.
+
+\subsection{Experiment workflow}
+The recommended review workflow has three levels.
+
+\paragraph{Level 1: Fast figure reproduction from cached logs.}
+Download the minimal workspace and run the notebooks that parse released JSON,
+HDF5, and log files:
+\begin{itemize}[leftmargin=*]
+\item Figure 10: \texttt{experiments/vqvae\_microbenchmark/vqvae\_performance.ipynb}.
+\item Figures 7 and 8: \texttt{experiments/knn\_coverage/intra\_knn\_distribution.ipynb} and \texttt{experiments/knn\_coverage/knn\_coverage.ipynb}.
+\item Figure 6: \texttt{experiments/simulation\_scaling/simulation\_results.ipynb}.
+\item Figure 9: \texttt{experiments/real\_world\_scaling/real\_world\_paper\_figure.ipynb}.
+\item Figure 1 and pilot studies: notebooks under \texttt{experiments/pilot\_study/}.
+\end{itemize}
+
+\paragraph{Level 2: Recompute selected intermediate results.}
+Reviewers can evaluate supplied checkpoints and regenerate intermediate files:
+\begin{verbatim}
+cd experiments/vqvae_microbenchmark
+python recover_training_results.py
+python batch_evaluate_models.py
+\end{verbatim}
+Encode datasets into tokens:
+\begin{verbatim}
+python src/wicompass/evaluation/encode_datasets_into_tokens.py \
+  --dataset MMFi --dataset-type mmfi
+python src/wicompass/evaluation/encode_datasets_into_tokens.py \
+  --dataset MMBody --dataset-type mmbody
+\end{verbatim}
+Recompute KNN coverage for selected settings:
+\begin{verbatim}
+python src/wicompass/knn_coverage/knn_coverage.py \
+  --dataset-A logs/wicompass/encoded_tokens/BMLmovi-BMLrub-CMU-GRAB-KIT-MOYO-MoSh-PosePrior-WEIZMANN_tokens.h5 \
+  --dataset-B logs/wicompass/encoded_tokens/MMFi_tokens.h5 \
+  --metric cosine --k 2 --multi-gpu --sample-ratio 1.0 \
+  --output logs/wicompass/knn_coverage/mmfi/k2
+\end{verbatim}
+
+\paragraph{Level 3: Re-run training and data-scaling experiments.}
+With the full workspace, reviewers can re-run simulator-scaling training:
+\begin{verbatim}
+python experiments/simulation_scaling/train_simulation_batch.py --list
+python experiments/simulation_scaling/train_simulation_batch.py
+python experiments/simulation_scaling/train_simulation_batch_different_size.py
+\end{verbatim}
+They can also re-run real-world training and pilot-study training scripts under
+\texttt{experiments/real\_world\_scaling/} and \texttt{experiments/pilot\_study/}.
+Full pilot-study retraining is expected to require about 400 GPU-hours on an
+RTX 3090 class GPU.
+
+\subsection{Evaluation and expected results}
+For the fast review path, the expected result is a regenerated set of plots that
+matches the trends and main claims in the paper: VQ-VAE model configurations
+produce the reported reconstruction/tokenization tradeoffs, WiCompass improves
+latent-space coverage over baseline mmWave datasets, WiCompass-selected data
+improves simulator-based pose-estimation scaling, the real-world validation
+follows the paper's reported trend, and pilot studies reproduce the motivating
+model-size, leave-one-out, and data-efficiency observations.  Exact pixel-level
+or floating-point equality is not expected because plotting libraries, GPU
+kernels, and stochastic training can vary across systems; differences should not
+change the paper's conclusions.
+
+For intermediate recomputation, expected outputs include \texttt{training\_result.json},
+\texttt{testing\_result.json}, HDF5 token files in \texttt{logs/wicompass/encoded\_tokens/},
+KNN coverage outputs under \texttt{logs/wicompass/knn\_coverage/}, sampled token
+arrays under \texttt{logs/wicompass/sampled\_tokens/}, and sampled pose outputs
+under \texttt{logs/wicompass/sampled\_poses/}.
+
+\subsection{Experiment customization}
+The artifact can be customized by changing VQ-VAE configuration files under
+\texttt{src/wicompass/configs/}, selecting different datasets in
+\texttt{src/wicompass/configs/datasets.json}, varying KNN parameters such as
+\texttt{k}, metric, and sample ratio in \texttt{src/wicompass/knn\_coverage/},
+and adjusting sampling budgets, seeds, and coverage parameters in
+\texttt{src/wicompass/token\_space\_sampling/}.  Pose-estimation training can be
+customized through YAML files under \texttt{src/pose\_estimation/configs/} and
+\texttt{experiments/real\_world\_scaling/configs/}.
+
+\subsection{Notes}
+The artifact has a short path and a full path.  The short path is intended for
+artifact reviewers who need to validate documentation, executability, and the
+main reported trends within limited review time.  The full path is intended for
+reviewers with access to substantial GPU time and storage.  RF-Genesis is used
+to produce simulated mmWave data, but the generated simulation datasets are
+included so reviewers do not need to install RF-Genesis unless they want to audit
+that external simulation stage.
+
+TODO: verify the target venue's anonymity policy.  If the AE process is double
+anonymous, replace author-identifying URLs and repository names with anonymous
+review links until de-anonymization is allowed.
+
+\subsection{Methodology}
+This appendix is organized according to the cTuning Artifact Evaluation template
+and ACM artifact badging terminology.  The submission primarily targets
+Artifacts Evaluated -- Functional, because the artifact is documented,
+consistent with the paper, complete to the extent permitted by dataset licenses,
+and exercisable through released scripts, notebooks, model weights, and cached
+results.  If the final artifact is deposited in a permanent archival repository
+with a DOI or equivalent unique identifier, it can also request Artifacts
+Available.  Results Validated should only be requested after an independent
+non-author team has reproduced or replicated the main results.
+
+\begin{itemize}[leftmargin=*]
+\item \url{https://www.acm.org/publications/policies/artifact-review-and-badging-current}
+\item \url{https://cTuning.org/ae}
+\end{itemize}
+
+\end{document}
