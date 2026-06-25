@@ -5,7 +5,7 @@ This repository contains the Artifact Evaluation appendix draft for
 
 ## Files
 
-- `ae.tex`: working appendix draft based on the cTuning AE template.
+- `ae.tex`: working appendix draft based on the cTuning AE template, using a self-contained standard LaTeX class for local compilation.
 - `template/ae-original.tex`: unmodified upstream template for reference.
 - `Makefile`: convenience targets for building the PDF.
 

@@ -1,8 +1,8 @@
 % LaTeX template for Artifact Evaluation V20240722, adapted for WiCompass.
 % Original template: https://github.com/ctuning/artifact-evaluation/blob/master/docs/template/ae.tex
-\documentclass{sigplanconf}
+\documentclass[10pt]{article}
+\usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
-\usepackage{enumitem}
 \begin{document}
 \special{papersize=8.5in,11in}
 
@@ -23,7 +23,7 @@ training, subject to GPU time availability.
 
 \subsection{Artifact check-list (meta-information)}
 {\small
-\begin{itemize}[leftmargin=*]
+\begin{itemize}
 \item {\bf Algorithm:} VQ-VAE pose tokenization; KNN latent-space coverage; prioritized pose sampling (PPS); mmWave human pose estimation with Point Transformer.
 \item {\bf Program:} Python package \texttt{wicompass}; experiment scripts and Jupyter notebooks under \texttt{experiments/}; pose-estimation package under \texttt{src/pose\_estimation/}.
 \item {\bf Compilation:} Python package installation plus optional PointNet++ CUDA extension compilation.
@@ -55,7 +55,7 @@ training, subject to GPU time availability.
 TODO: provide the final artifact package link for reviewers.  The working code
 repository is expected to contain the WiCompass source tree with the following
 main components:
-\begin{itemize}[leftmargin=*]
+\begin{itemize}
 \item \texttt{src/wicompass/}: VQ-VAE, latent-space coverage, sampling, evaluation, and visualization code.
 \item \texttt{src/pose\_estimation/}: mmWave pose-estimation datasets, model, training, and evaluation code.
 \item \texttt{experiments/}: scripts and notebooks that regenerate the paper figures and optional training results.
@@ -93,7 +93,7 @@ extensions are built from the repository submodule.
 
 \subsubsection{Data sets}
 The workspace contains the following extracted components:
-\begin{itemize}[leftmargin=*]
+\begin{itemize}
 \item \texttt{model\_zoo}: pre-trained model weights, about 1.6 GB.
 \item \texttt{wicompass\_logs}: training logs, encoded tokens, KNN results, and cached figure inputs, about 34 GB.
 \item \texttt{AMASS\_preproc}: processed AMASS pose data, about 3.2 GB.
@@ -145,7 +145,7 @@ The recommended review workflow has three levels.
 \paragraph{Level 1: Fast figure reproduction from cached logs.}
 Download the minimal workspace and run the notebooks that parse released JSON,
 HDF5, and log files:
-\begin{itemize}[leftmargin=*]
+\begin{itemize}
 \item Figure 10: \texttt{experiments/vqvae\_microbenchmark/vqvae\_performance.ipynb}.
 \item Figures 7 and 8: \texttt{experiments/knn\_coverage/intra\_knn\_distribution.ipynb} and \texttt{experiments/knn\_coverage/knn\_coverage.ipynb}.
 \item Figure 6: \texttt{experiments/simulation\_scaling/simulation\_results.ipynb}.
@@ -240,7 +240,7 @@ with a DOI or equivalent unique identifier, it can also request Artifacts
 Available.  Results Validated should only be requested after an independent
 non-author team has reproduced or replicated the main results.
 
-\begin{itemize}[leftmargin=*]
+\begin{itemize}
 \item \url{https://www.acm.org/publications/policies/artifact-review-and-badging-current}
 \item \url{https://cTuning.org/ae}
 \end{itemize}
