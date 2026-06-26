@@ -5,7 +5,7 @@ This repository contains the Artifact Evaluation appendix draft for
 
 ## Files
 
-- `ae.tex`: working appendix draft based on the cTuning AE template, using a self-contained standard LaTeX class for local compilation.
+- `ae.tex`: working appendix draft based on the official cTuning AE template, using `template/sigplanconf.cls` for local compilation.
 - `template/ae-original.tex`: unmodified upstream template for reference.
 - `Makefile`: convenience targets for building the PDF.
 
@@ -23,7 +23,7 @@ make pdflatex
 
 ## Open items before submission
 
-- Replace placeholder artifact URLs with the final anonymous or public review links.
-- Add the permanent archival DOI if requesting the ACM Artifacts Available badge.
-- Confirm the exact AE venue policy, page limit, anonymity policy, and PDF format.
-- Confirm hardware timing estimates for reviewers on the target AE machine class.
+- Anonymous artifact repository is set to https://github.com/MobiCom26AE/WiCompass.
+- Paper DOI is https://doi.org/10.1145/3795866.3796684; artifact archive DOI is still pending.
+- Badge request: Artifacts Available, Artifacts Evaluated - Functional, and Validated - Results Reproduced.
+- Confirm the remaining AE venue policy details: anonymity policy and acceptable review/archive links.

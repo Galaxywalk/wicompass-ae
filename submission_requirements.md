@@ -51,8 +51,8 @@ Hard requirements:
 
 WiCompass status:
 
-- `ae.tex` currently follows the cTuning-style structure but is 5 pages in local `article` format. It must be compressed to the venue's 3-page limit before submission.
-- `ae.tex` currently contains TODOs for artifact URL, DOI, data license terms, and anonymity policy.
+- `ae.tex` compiles to 2 pages locally using the official cTuning `sigplanconf` template/style.
+- The anonymous artifact URL is set. The paper DOI is `https://doi.org/10.1145/3795866.3796684`; the artifact archive DOI is still pending. Data/license terms are summarized at a high level in `ae.tex`.
 
 ## Artifact Packaging Requirements
 
@@ -71,12 +71,12 @@ Required or strongly expected:
 
 WiCompass implications:
 
-- We need a minimum working example that can run quickly. Candidate: a script that verifies environment, symlinks, model import, one small model evaluation or cached-log figure reproduction.
-- We should add explicit per-component runtimes to `ae.tex`: install, workspace download, minimal figure reproduction, selected model evaluation, selected KNN recomputation, full retraining.
-- We should decide whether to provide a Docker container. Because WiCompass depends on CUDA, PyTorch, FAISS GPU, PointNet++ CUDA extensions, and large external data, a Dockerfile or image would reduce reviewer setup risk.
-- We need an anonymized artifact link for double-blind review, if the AE process expects anonymity at submission time.
-- We need a permanent DOI-backed archive after acceptance if requesting Artifacts Available.
-- If any experiment requires our local GPU server or special setup, we need a remote-access plan with anonymous accounts and reviewer control.
+- The repository README now provides quick setup and minimal figure-reproduction commands.
+- `ae.tex` records per-path runtime and hardware estimates for setup, Level 1, Level 2, smoke tests, and full long-running paths.
+- Docker/video packaging is not planned; the review path uses Conda, submodules, and the released workspace.
+- The anonymous artifact link is set to the MobiCom26AE GitHub repository.
+- The paper DOI is `https://doi.org/10.1145/3795866.3796684`; the separate artifact archive DOI is still pending.
+- Remote access is not required for the standard review path; full reproduction can be run from the released artifact on suitable GPU hardware.
 
 ## Badge-Specific Criteria
 
@@ -163,7 +163,7 @@ WiCompass action items:
   - Simulation data-scaling figure/trends.
   - Real-world validation figure/trends.
   - Pilot-study figure/trends.
-- Define a reduced but representative Results Reproduced path, because full retraining is about 400 GPU-hours and full KNN recomputation is about 12 GPU-hours.
+- Define both a quick reviewer path and the full Results Reproduced path. Full retraining is about 400 GPU-hours and full KNN recomputation is about 12 GPU-hours, but the artifact includes the scripts and data needed for complete reproduction.
 - Prepare optional demo videos for long-running or environment-specific stages:
   - full workspace setup and sanity check
   - figure reproduction from cached logs
@@ -188,19 +188,21 @@ Before submission:
 
 Must finish before submission:
 
-- Compress `ae.tex` to at most 3 pages under the required template/style.
-- Replace TODO artifact URL with final anonymous review link.
-- Decide which badges to request.
-- Add final DOI/unique identifier if requesting Artifacts Available.
-- Add a clear minimum working example command.
-- Add exact expected runtime and hardware for each review path.
-- Add explicit key results for Results Reproduced.
-- Add a reduced-scope plan for long-running experiments.
-- Add data-license and redistribution notes for AMASS, MMFi, mmBody, real-world data, and RF-Genesis generated simulation data.
-- Consider adding a Dockerfile or container instructions.
-- Consider adding demo videos for long-running or environment-specific workflows.
-- Verify all links work from a clean reviewer account.
-- Verify the artifact can be downloaded without relying on private rclone credentials.
+- `ae.tex` is under the 3-page limit using the official cTuning `sigplanconf` template/style.
+- Anonymous review repository link is set to https://github.com/MobiCom26AE/WiCompass.
+- Badge request is set to all three ACM badges: Artifacts Available, Artifacts Evaluated - Functional, and Validated - Results Reproduced.
+- Paper DOI is set to `https://doi.org/10.1145/3795866.3796684`; separate artifact archive DOI remains pending.
+- Minimum working example command has been validated in the anonymous repository README.
+- Runtime and hardware estimates are summarized in `ae.tex` and the repository README using the official cTuning checklist fields.
+- Results Reproduced evidence is summarized in `ae.tex` and `validation_report.md`; the artifact also includes full training scripts for complete reproduction.
+- Reproduction plan is documented as Level 1/2/3 in `ae.tex`, with quick checks plus full training paths.
+- Data-license notes are set in `ae.tex`: Code: MIT License; Dataset/model: CC BY 4.0.
+- Official checklist estimates are set in `ae.tex`: about 200 GB disk, download-bound preparation, about 1 hour for Level 1, about 2 hours for Level 2, and about 450 GPU-hours for full from-scratch reproduction.
+- Public availability is marked yes; code license is MIT License; dataset/model license is CC BY 4.0; artifact archive DOI is marked pending, not confused with the paper DOI.
+- Docker/container packaging is not planned; the artifact uses Conda plus the released workspace because of CUDA extensions and large data.
+- Demo videos are not planned; long-running paths are documented directly, with quick sanity checks provided in addition to the full reproduction workflow.
+- Clean-reviewer account link/download verification passed.
+- Workspace download was verified through public review links without private rclone credentials.
 
 Current local workspace facts to reflect in the submission:
 
@@ -213,13 +215,13 @@ Current local workspace facts to reflect in the submission:
   - `mmbody`: about 34 GB
   - `real_world`: about 431 MB
   - `simulation_datasets`: about 8.2 GB
-- Full extracted workspace total: about 83 GB, plus archive/download overhead.
+- Full extracted workspace total: about 83 GB, plus archive/download overhead; about 200 GB is recommended for full review use including temporary outputs and build artifacts.
 - Current local Python environment used for verification: Python 3.11, PyTorch 2.5.1+cu124.
 
 ## Open Questions for Chairs or Final Author Decision
 
-- Is the three-page artifact description limit enforced under the exact cTuning template, ACM format, or plain PDF?
+- Page-limit decision: current `ae.pdf` is 2 pages under the official cTuning `sigplanconf` template/style.
 - Should the artifact repository be anonymous for accepted papers, or is best-effort anonymization enough?
 - Are Google Drive links acceptable during review if the final accepted artifact is later archived with DOI?
-- Can processed AMASS/MMFi/mmBody derivatives be redistributed publicly, or should they be gated/instructions-only?
-- Should WiCompass request Results Reproduced, or only Available + Functional, given the large compute and dataset scale?
+- License decision: Code: MIT License; Dataset/model: CC BY 4.0.
+- Badge decision: request Results Reproduced in addition to Available and Functional; large-compute paths are documented rather than omitted.

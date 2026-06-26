@@ -3,11 +3,11 @@ PDFLATEX ?= pdflatex
 
 all: ae.pdf
 
-ae.pdf: ae.tex
-	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error ae.tex
+ae.pdf: ae.tex template/sigplanconf.cls
+	TEXINPUTS=.:template//: $(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error ae.tex
 
 pdflatex:
-	$(PDFLATEX) -interaction=nonstopmode -halt-on-error ae.tex
+	TEXINPUTS=.:template//: $(PDFLATEX) -interaction=nonstopmode -halt-on-error ae.tex
 
 clean:
 	$(LATEXMK) -C ae.tex || true
