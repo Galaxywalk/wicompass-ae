@@ -24,6 +24,6 @@ make pdflatex
 ## Open items before submission
 
 - Anonymous artifact repository is set to https://github.com/MobiCom26AE/WiCompass.
-- Paper DOI is https://doi.org/10.1145/3795866.3796684; artifact archive DOI is still pending.
+- Paper DOI is https://doi.org/10.1145/3795866.3796684; artifact archive is available at https://zenodo.org/records/20907837.
 - Badge request: Artifacts Available, Artifacts Evaluated - Functional, and Validated - Results Reproduced.
 - Confirm the remaining AE venue policy details: anonymity policy and acceptable review/archive links.

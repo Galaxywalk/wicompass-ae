@@ -52,7 +52,7 @@ Hard requirements:
 WiCompass status:
 
 - `ae.tex` compiles to 2 pages locally using the official cTuning `sigplanconf` template/style.
-- The anonymous artifact URL is set. The paper DOI is `https://doi.org/10.1145/3795866.3796684`; the artifact archive DOI is still pending. Data/license terms are summarized at a high level in `ae.tex`.
+- The anonymous artifact URL is set. The paper DOI is `https://doi.org/10.1145/3795866.3796684`; the artifact archive is available at `https://zenodo.org/records/20907837`. Data/license terms are summarized at a high level in `ae.tex`.
 
 ## Artifact Packaging Requirements
 
@@ -75,7 +75,7 @@ WiCompass implications:
 - `ae.tex` records per-path runtime and hardware estimates for setup, Level 1, Level 2, smoke tests, and full long-running paths.
 - Docker/video packaging is not planned; the review path uses Conda, submodules, and the released workspace.
 - The anonymous artifact link is set to the MobiCom26AE GitHub repository.
-- The paper DOI is `https://doi.org/10.1145/3795866.3796684`; the separate artifact archive DOI is still pending.
+- The paper DOI is `https://doi.org/10.1145/3795866.3796684`; the artifact archive is available at `https://zenodo.org/records/20907837`.
 - Remote access is not required for the standard review path; full reproduction can be run from the released artifact on suitable GPU hardware.
 
 ## Badge-Specific Criteria
@@ -191,14 +191,14 @@ Must finish before submission:
 - `ae.tex` is under the 3-page limit using the official cTuning `sigplanconf` template/style.
 - Anonymous review repository link is set to https://github.com/MobiCom26AE/WiCompass.
 - Badge request is set to all three ACM badges: Artifacts Available, Artifacts Evaluated - Functional, and Validated - Results Reproduced.
-- Paper DOI is set to `https://doi.org/10.1145/3795866.3796684`; separate artifact archive DOI remains pending.
+- Paper DOI is set to `https://doi.org/10.1145/3795866.3796684`; the artifact archive is available at `https://zenodo.org/records/20907837`.
 - Minimum working example command has been validated in the anonymous repository README.
 - Runtime and hardware estimates are summarized in `ae.tex` and the repository README using the official cTuning checklist fields.
 - Results Reproduced evidence is summarized in `ae.tex` and `validation_report.md`; the artifact also includes full training scripts for complete reproduction.
 - Reproduction plan is documented as Level 1/2/3 in `ae.tex`, with quick checks plus full training paths.
 - Data-license notes are set in `ae.tex`: Code: MIT License; Dataset/model: CC BY 4.0.
 - Official checklist estimates are set in `ae.tex`: about 200 GB disk, download-bound preparation, about 1 hour for Level 1, about 2 hours for Level 2, and about 450 GPU-hours for full from-scratch reproduction.
-- Public availability is marked yes; code license is MIT License; dataset/model license is CC BY 4.0; artifact archive DOI is marked pending, not confused with the paper DOI.
+- Public availability is marked yes; code license is MIT License; dataset/model license is CC BY 4.0; the artifact archive is listed as the Zenodo record, not confused with the paper DOI.
 - Docker/container packaging is not planned; the artifact uses Conda plus the released workspace because of CUDA extensions and large data.
 - Demo videos are not planned; long-running paths are documented directly, with quick sanity checks provided in addition to the full reproduction workflow.
 - Clean-reviewer account link/download verification passed.
@@ -222,6 +222,6 @@ Current local workspace facts to reflect in the submission:
 
 - Page-limit decision: current `ae.pdf` is 2 pages under the official cTuning `sigplanconf` template/style.
 - Should the artifact repository be anonymous for accepted papers, or is best-effort anonymization enough?
-- Are Google Drive links acceptable during review if the final accepted artifact is later archived with DOI?
+- Is the Zenodo record sufficient as the primary archive while Google Drive and Baidu Netdisk remain download mirrors during review?
 - License decision: Code: MIT License; Dataset/model: CC BY 4.0.
 - Badge decision: request Results Reproduced in addition to Available and Functional; large-compute paths are documented rather than omitted.
