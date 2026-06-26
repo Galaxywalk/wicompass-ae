@@ -35,7 +35,7 @@
 \section{Artifact Appendix}
 
 \subsection{Abstract}
-This artifact supports the MobiCom 2026 paper ``WiCompass: Oracle-driven Data Scaling for mmWave Human Pose Estimation.''  It includes source code, processed datasets, pre-trained VQ-VAE and pose-estimation weights, cached logs/intermediate results, and notebooks/scripts for reproducing the paper's results.  The review workflow has three levels: (1) regenerate paper figures from released logs, (2) recompute results from released weights and intermediate data, and (3) run training from scratch, with smoke-test commands provided as quick sanity checks for the full training entry points.
+This artifact supports the MobiCom 2026 paper \#203 ``WiCompass: Oracle-driven Data Scaling for mmWave Human Pose Estimation.''  It includes source code, processed datasets, pre-trained VQ-VAE and pose-estimation weights, cached logs/intermediate results, and notebooks/scripts for reproducing the paper's results.  The review workflow has three levels: (1) regenerate paper figures from released logs, (2) recompute results from released weights and intermediate data, and (3) run training scripts from scratch for full reproduction.
 
 \subsection{Artifact check-list (meta-information)}
 {\small
@@ -67,7 +67,7 @@ This artifact supports the MobiCom 2026 paper ``WiCompass: Oracle-driven Data Sc
 \subsection{Description}
 
 \subsubsection{How to access}
-The anonymous review repository is \url{https://github.com/MobiCom26AE/WiCompass}. The workspace is downloaded from the repository README's Google Drive or Baidu Netdisk archive links using the supplied tools. After extraction, the setup tool creates repository-local links for \texttt{logs}, \texttt{model\_zoo}, and \texttt{datasets/*}.
+The anonymous review repository is \url{https://github.com/MobiCom26AE/WiCompass}. The workspace is downloaded from the repository README's archive links using the supplied tools. After extraction, the setup tool creates repository-local links for \texttt{logs}, \texttt{model\_zoo}, and \texttt{datasets/*}.
 
 \subsubsection{Hardware dependencies}
 A CUDA-capable GPU is strongly recommended. Figure reproduction can run on a smaller machine after cached logs are present; Level 2 and full training benefit from multiple GPUs. The authors validated the artifact with 4 NVIDIA RTX 4090 GPUs.
@@ -103,16 +103,17 @@ python -m ipykernel install --user \
 Omit \texttt{--minimal} for full retraining or full pipeline inspection.
 
 \subsection{Experiment workflow}
-The artifact supports three review levels.  Level 1 is the recommended fast path: use the supplied logs, tokens, KNN outputs, sampled poses, model weights, and notebooks to regenerate the paper figures.  Register the kernel once and execute the notebooks in the VQ-VAE, KNN coverage, simulation scaling, real-world scaling, and pilot-study experiment folders.
+The artifact supports three review levels. Detailed workflow can be found in the repository README. Level 1 is the fast path: use the supplied logs, tokens, KNN outputs, sampled poses, model weights, and notebooks to regenerate the paper figures.  Register the kernel once and execute the notebooks in the VQ-VAE, KNN coverage, simulation scaling, real-world scaling, and pilot-study experiment folders.
 \begin{lstlisting}[language=bash]
 python -m ipykernel install --user --name wicompass \
   --display-name WiCompass
 # Open the notebooks with the WiCompass kernel, or execute them with nbconvert.
-# Key notebooks: experiments/vqvae_microbenchmark/vqvae_performance.ipynb,
-# experiments/knn_coverage/{intra_knn_distribution,knn_coverage}.ipynb,
-# experiments/simulation_scaling/simulation_results.ipynb,
-# experiments/real_world_scaling/real_world_paper_figure.ipynb,
-# and experiments/pilot_study/*/*paper_figure.ipynb.
+# Key notebooks: 
+experiments/vqvae_microbenchmark/vqvae_performance.ipynb
+experiments/knn_coverage/{intra_knn_distribution,knn_coverage}.ipynb
+experiments/simulation_scaling/simulation_results.ipynb
+experiments/real_world_scaling/real_world_paper_figure.ipynb
+experiments/pilot_study/*/*paper_figure.ipynb
 \end{lstlisting}
 Level 2 recomputes representative intermediate results from released weights and data caches.  Reviewers can re-evaluate VQ-VAE checkpoints, regenerate MMFi/MMBody token files, recompute selected KNN coverage, run PPS/random sampling, and decode sampled tokens to SMPL-X poses.
 \begin{lstlisting}[language=bash]
@@ -139,7 +140,7 @@ python src/wicompass/token_space_sampling/convert_sampled_tokens_to_poses.py \
   --config src/wicompass/configs/joint_vae_base_tokennum16_tokenclass64.json \
   --output-dir /tmp/wc-ae/poses
 \end{lstlisting}
-Level 3 is the full reproduction path.  It starts from the dataset components, optionally repeats token sampling and RF-Genesis simulation, and retrains pose-estimation models for simulation scaling, real-world validation, and pilot studies.  This path is GPU-expensive and is intended for reviewers with sufficient compute.
+Level 3 is the full reproduction path.  It starts from the dataset components, optionally repeats token sampling and RF-Genesis simulation, and retrains pose-estimation models for simulation scaling, real-world validation, and pilot studies.  This path is GPU-expensive.
 \begin{lstlisting}[language=bash]
 python src/wicompass/token_space_sampling/random_sampling.py \
   --A-path logs/wicompass/encoded_tokens/BMLmovi-BMLrub-CMU-GRAB-KIT-MOYO-MoSh-PosePrior-WEIZMANN_tokens.h5 \
