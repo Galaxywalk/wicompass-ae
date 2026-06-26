@@ -61,13 +61,13 @@ This artifact supports the MobiCom 2026 paper ``WiCompass: Oracle-driven Data Sc
 \item \textbf{Code licenses (if publicly available)?:} Code: MIT License.
 \item \textbf{Data licenses (if publicly available)?:} Dataset/model: CC BY 4.0.
 \item \textbf{Workflow automation framework used?:} Python scripts, shell commands, Jupyter notebooks, rclone-based download/setup tools, and TensorBoard logs; no external workflow engine is required.
-\item \textbf{Archived (provide DOI)?:} Not yet; the artifact archive DOI is pending. The paper DOI is not used as the artifact archive DOI.
+\item \textbf{Archived (provide DOI)?:} Yes; the artifact has been archived on Zenodo: \url{https://zenodo.org/records/20907837}.
 \end{itemize}}
 
 \subsection{Description}
 
 \subsubsection{How to access}
-The anonymous review repository is \url{https://github.com/MobiCom26AE/WiCompass}. The workspace is downloaded from the repository README's Google Drive or Baidu Netdisk archive links using the supplied tools. After extraction, the setup tool creates repository-local links for \texttt{logs}, \texttt{model\_zoo}, and \texttt{datasets/*}.
+The anonymous review repository is \url{https://github.com/MobiCom26AE/WiCompass}. The workspace can be downloaded from the Zenodo archive at \url{https://zenodo.org/records/20907837}, or from the repository README's Google Drive and Baidu Netdisk archive links using the supplied tools. After extraction, the setup tool creates repository-local links for \texttt{logs}, \texttt{model\_zoo}, and \texttt{datasets/*}.
 
 \subsubsection{Hardware dependencies}
 A CUDA-capable GPU is strongly recommended. Figure reproduction can run on a smaller machine after cached logs are present; Level 2 and full training benefit from multiple GPUs. The authors validated the artifact with 4 NVIDIA RTX 4090 GPUs.
@@ -167,7 +167,7 @@ Reviewers can vary notebook inputs, KNN parameters such as \texttt{k}, metric, a
 The artifact has short cached-log and intermediate-recompute paths for AE review, plus full from-scratch training paths for complete reproduction. Full retraining is intentionally much more expensive than the standard review workflow.
 
 \subsection{Methodology}
-The appendix follows the cTuning/ACM AE structure.  This submission requests all three ACM artifact badges: \emph{Artifacts Available}, to be supported by the final artifact archive DOI; \emph{Artifacts Evaluated -- Functional}, supported by the documented setup and executable workflow; and \emph{Validated -- Results Reproduced}, supported by cached-figure reproduction, recomputation from released weights and intermediate data, and full training scripts.
+The appendix follows the cTuning/ACM AE structure.  This submission requests all three ACM artifact badges: \emph{Artifacts Available}, supported by the Zenodo artifact archive; \emph{Artifacts Evaluated -- Functional}, supported by the documented setup and executable workflow; and \emph{Validated -- Results Reproduced}, supported by cached-figure reproduction, recomputation from released weights and intermediate data, and full training scripts.
 
 
 Submission, reviewing and badging methodology:
